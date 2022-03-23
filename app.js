@@ -5,16 +5,22 @@ Error: The 2nd parameter to `mongoose.model()` should be a schema or a POJO
 - error from mixing prof's and LinkedIn Learning
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
 - follow tutorial for TodoListAPI https://www.codementor.io/@olatundegaruba/nodejs-restful-apis-in-10-minutes-q0sgsfhbd
+- follow the tutorial for adding Swagger UI 
+   - https://blog.logrocket.com/documenting-your-express-api-with-swagger/
+   - https://dev.to/kabartolo/how-to-document-an-express-api-with-swagger-ui-and-jsdoc-50do
+   - https://github.com/satansdeer/swagger-api-library/blob/master/routes/books.js
 */
-var     express     = require('express'),
-        app         = express(),
-        path        = require('path'),
-        hbs         = require('hbs'),
-        port        = process.env.PORT || 3000,
-        mongoose    = require('mongoose'),
-        Clue        = require('./api/models/jeopardyModel'),
-        routes      = require('./api/routes/jeopardyRoutes'), // importing route
-        bodyParser  = require('body-parser'),
+var     express         =   require('express'),
+        app             =   express(),
+        path            =   require('path'),
+        hbs             =   require('hbs'),
+        port            =   process.env.PORT || 3000,
+        mongoose        =   require('mongoose'),
+        Clue            =   require('./api/models/jeopardyModel'),
+        routes          =   require('./api/routes/jeopardyRoutes'), // importing route
+        bodyParser      =   require('body-parser'),
+        swaggerUi       =   require('swagger-ui-express'),
+        swaggerJsdoc    =   require('swagger-jsdoc'),
         mongoUrl    = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy';
 
 // view engine setup
@@ -28,6 +34,35 @@ app.set("view engine", "html");
 app.engine("html", hbs.__express);
 
 app.use(express.json());
+
+// Swagger UI
+const options = {
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Jeopardy API",
+        version: "1.0.0",
+        description:
+          "A Jeopardy API",
+        license: {
+          name: "MIT",
+          url: "https://spdx.org/licenses/MIT.html",
+        },
+        contact: {
+          name: "Audrey Jo",
+          email: "jo.au@northeastern.edu",
+        },
+      },
+    },
+    apis: ["./api/routes/jeopardyRoutes.js"],
+  };
+  
+const specs = swaggerJsdoc(options);
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs, { explorer: true })
+);
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;

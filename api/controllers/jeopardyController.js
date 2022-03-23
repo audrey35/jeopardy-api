@@ -5,7 +5,7 @@ var mongoose    = require('mongoose'),
 
 // UPDATE to list_all_clues paginated
 exports.list_all_clues = function(req, res) {
-    Clue.find({}, function(err, clue) {
+    Clue.paginate({}, {page: req.query.pageNumber, limit: 10}, function(err, clue) {
         if (err) {
             res.send(err);
         }
