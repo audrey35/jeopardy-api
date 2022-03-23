@@ -13,10 +13,11 @@ var     express     = require('express'),
         Clue        = require('./api/models/jeopardyModel'),
         routes      = require('./api/routes/jeopardyRoutes'), // importing route
         bodyParser  = require('body-parser');
+        mongoUrl    = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy',
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/jeopardy');
+mongoose.connect(mongoUrl);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
