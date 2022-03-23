@@ -13,6 +13,7 @@ https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoo
 var     express         =   require('express'),
         app             =   express(),
         path            =   require('path'),
+	      cors	    	    =   require('cors'),
         port            =   process.env.PORT || 3000,
         mongoose        =   require('mongoose'),
         Clue            =   require('./api/models/jeopardyModel'),
@@ -20,7 +21,12 @@ var     express         =   require('express'),
         bodyParser      =   require('body-parser'),
         swaggerUi       =   require('swagger-ui-express'),
         swaggerJsdoc    =   require('swagger-jsdoc'),
-        mongoUrl    = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy';
+        mongoUrl        = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy';
+
+// Fix CORS issue
+// solution from Noah Beliveau
+// https://stackoverflow.com/a/21622564
+app.use(cors());
 
 // Swagger UI
 const options = {
@@ -30,7 +36,7 @@ const options = {
         title: "Jeopardy API",
         version: "1.0.0",
         description:
-          "A Jeopardy API",
+          "Jeopardy API contains 24,683 records. The data for the Jeopardy API is a small subset of the data available on https://www.j-archive.com/. This API uses the JSON format of the data downloaded from https://domohelp.domo.com/hc/en-us/articles/360043931814-Fun-Sample-DataSets",
         license: {
           name: "MIT",
           url: "https://spdx.org/licenses/MIT.html",
