@@ -2,11 +2,6 @@
 module.exports = function(app) {
     // controller is required for each route method to call it's respective handler function
     var jeopardy = require('../controllers/jeopardyController');
-    var page = require('../controllers/pageController')
-
-    // // documentation
-    // app.route('/')
-    //     .get(page.documentation);
 
     // jeopardy Routes
     app.route('/clues')

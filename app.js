@@ -13,7 +13,6 @@ https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoo
 var     express         =   require('express'),
         app             =   express(),
         path            =   require('path'),
-        hbs             =   require('hbs'),
         port            =   process.env.PORT || 3000,
         mongoose        =   require('mongoose'),
         Clue            =   require('./api/models/jeopardyModel'),
@@ -22,18 +21,6 @@ var     express         =   require('express'),
         swaggerUi       =   require('swagger-ui-express'),
         swaggerJsdoc    =   require('swagger-jsdoc'),
         mongoUrl    = process.env.MONGODB_URI || 'mongodb://localhost/jeopardy';
-
-// view engine setup
-app.set("views", path.join(__dirname, "api/views"));
-
-// for res.render to render .html rather than default .jade
-// handles Error: No default engine was specified and no extension was provided.
-// https://stackoverflow.com/a/23596000
-var hbs = require("hbs");
-app.set("view engine", "html");
-app.engine("html", hbs.__express);
-
-app.use(express.json());
 
 // Swagger UI
 const options = {
@@ -70,17 +57,6 @@ mongoose.connect(mongoUrl);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// // middleware intercepts incoming http request
-// // use middleware to return more interactive messages
-// // this message gets returned when the wrong route is entered
-// app.use(function(req, res) {
-//     res.status(404).send({ url: req.originalUrl + ' not found'})
-// });
-
-app.get("/", (req, res) => {
-    res.render("documentation");
-});
 
 routes(app); // register the route
 
