@@ -1,9 +1,11 @@
+// - Error: Route.get() requires a callback function but got a [object Undefined]
+//    - https://stackoverflow.com/a/60235531
+
 'use strict';
 
 var mongoose    = require('mongoose'),
     Clue        = mongoose.model('Clues');
 
-// UPDATE to list_all_clues paginated
 exports.list_all_clues = function(req, res) {
     Clue.paginate({}, {page: req.query.pageNumber, limit: 10}, function(err, clue) {
         if (err) {
@@ -49,5 +51,39 @@ exports.delete_a_clue = function(req, res) {
             res.send(err);
         }
         res.json({message: 'Clue successfully deleted'});
+    });
+};
+
+exports.list_all_clues_in_a_category = function(req, res) {
+    Clue.find({category: req.params.category}, function(err, clue) {
+      if (err)
+        res.send(err);
+      res.json(clue);
+    });
+  };
+
+exports.list_all_categories = function(req, res) {
+    Clue.find().distinct('category', function(err, clue) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(clue);
+    });
+};
+
+exports.list_all_clues_for_a_value = function(req, res) {
+    Clue.find({value: req.params.value}, function(err, clue) {
+      if (err)
+        res.send(err);
+      res.json(clue);
+    });
+  };
+
+exports.list_all_values = function(req, res) {
+    Clue.find().distinct('value', function(err, clue) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(clue);
     });
 };

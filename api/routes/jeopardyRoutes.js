@@ -12,6 +12,18 @@ module.exports = function(app) {
         .get(jeopardy.read_a_clue)
         .put(jeopardy.update_a_clue)
         .delete(jeopardy.delete_a_clue);
+    
+    app.route('/categories')
+        .get(jeopardy.list_all_categories);
+    
+    app.route('/clues/categories/:category')
+        .get(jeopardy.list_all_clues_in_a_category);
+
+    app.route('/values')
+        .get(jeopardy.list_all_values);
+    
+    app.route('/clues/values/:value')
+        .get(jeopardy.list_all_clues_for_a_value);
 };
 
 /**
@@ -161,3 +173,88 @@ module.exports = function(app) {
  *         description: The clue was not found
  */
 
+/**
+ * @swagger
+ * /categories:
+ *   get:
+ *     summary: Returns a list of jeopardy categories.
+ *     responses:
+ *       200:
+ *         description: The list of categories.
+ *         content:
+ *           application/json:
+ *             schema:
+ *                 type: array
+ *                 items:
+ *                   type:string
+ */
+
+/**
+ * @swagger
+ * /clues/categories/{category}:
+ *   get:
+ *     summary: Get a list of clues that belongs to the specified category.
+ *     parameters:
+ *       - in: path
+ *         name: category
+ *         schema:
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: The list of jeopardy clues belonging to a category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Clue'
+ *       404:
+ *         description: The clues were not found
+ */
+
+/**
+ * @swagger
+ * /values:
+ *   get:
+ *     summary: Returns a list of jeopardy values.
+ *     responses:
+ *       200:
+ *         description: The list of jeopardy values.
+ *         content:
+ *           application/json:
+ *             schema:
+ *                 type: array
+ *                 items:
+ *                   type:string
+ */
+
+/**
+ * @swagger
+ * /clues/values/{value}:
+ *   get:
+ *     summary: Get a list of clues that belongs to the specified value.
+ *     parameters:
+ *       - in: path
+ *         name: value
+ *         schema:
+ *         type: string
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: The list of jeopardy clues belonging to a value
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Clue'
+ *       404:
+ *         description: The clues were not found
+ */
